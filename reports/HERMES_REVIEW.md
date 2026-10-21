@@ -70,3 +70,11 @@ Language changed to Indonesian. Key points:
 ---
 
 No secrets, wallet addresses, balances, seeds, private keys, passwords, tokens, cookies, or personal info included.
+
+## Review terbaru dan langkah berikutnya
+
+- Branch ditarik secara fast-forward ke commit `bd9558746f8f42531b777f80cfcc02ac99229a7`. Commit itu hanya mengubah laporan ini; tidak ada perubahan kode atau konfigurasi.
+- Ringkasan risiko dan batas izin dalam laporan ini sesuai. Instruksi langkah berikutnya sudah tersedia di [`HERMES_NEXT_COMMAND.md`](HERMES_NEXT_COMMAND.md).
+- Hermes boleh menjalankan hanya preflight baca-saja di dokumen tersebut, lalu mengirim ringkasan versi alat, status checkout, dan ruang disk kepada pemilik. Jangan sertakan path lokal atau output mentah.
+- Setelah melapor, berhenti. `prepare`, `wallet-setup`, proof key, konfigurasi runtime, peer/trader/MCP, dan transaksi memerlukan tinjauan serta izin terpisah.
+- Review ini tidak mengakses, menghentikan, memulai ulang, atau mengubah worker maupun wallet.
