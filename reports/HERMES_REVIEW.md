@@ -1,112 +1,72 @@
 # HERMES_REVIEW — Intercom DEX v0.1.5
 
-**Commit reviewed:** 57859693b4ab9cb6988af89559ef213587361cf6 (main)
-**Branch:** hermes/review-2026-10-21
+**Commit reviewed:** 57859693b4ab9cb6988af89559ef213587361cf6 (`main`)
+**Branch:** `hermes/review-2026-10-21`
 **Date:** 2026-10-21
 
----
-
-## Files Reviewed
+## Files reviewed
 
 | File | Purpose |
 |------|---------|
-| HERMES_NEXT_STEPS.md | Handoff guide with safe workflow steps |
-| PROJECT_OVERVIEW.md | Project scope, phases, boundaries, risks |
-| README.md | Usage instructions, phases, constraints |
-| TEST_REPORT.md | 31 checks on Node 24.19.0 & 26.12.0 (synthetic wallets) |
+| `HERMES_NEXT_STEPS.md` | Safe staged handoff guide |
+| `PROJECT_OVERVIEW.md` | Project scope, phases, boundaries, and risks |
+| `README.md` | Setup phases and safeguards |
+| `TEST_REPORT.md` | 31 checks on Node 24.19.0 and 26.12.0 with synthetic wallets |
 
----
+## What has been done
 
-## Summary of What Has Been Done
+### Release and setup helper
 
-### Release Pinning & Verification
-- Upstream release: Intercom DEX v0.1.5 (tagged, not main)
-- Archive SHA-256: 63cef1771c8596e095cd7eaa52da2c74bc3670fad54f0d7b20f32b8a1b547b56
-- Venue keys in script match release metadata
-- Archive verified against official release page
+- Upstream release is Intercom DEX v0.1.5, pinned to the release archive rather than the development branch.
+- Expected archive SHA-256: `63cef1771c8596e095cd7eaa52da2c74bc3670fad54f0d7b20f32b8a1b547b56`.
+- The helper verifies the archive hash before extraction and rejects unsafe archive entries.
+- The helper has three separate phases: `plan`, `prepare`, and interactive `wallet-setup`.
+- `plan` was reported successful. It only displays the plan and does not download, write files, read wallet contents, or start processes.
 
-### Script Phases (setup_intercom_dex.py)
-| Phase | Status | What It Does |
-|-------|--------|--------------|
-| plan | Reported done | Shows plan only; no download, write, wallet read, or process start |
-| prepare | Not yet run on user machine | Downloads archive, verifies hash, extracts safely, runs npm ci on release + peer; creates DEX root folder under Linux HOME; no wallet/keystore access |
-| wallet-setup | Not run | Interactive only; prompts for DEX password (12+ chars) and RESET keystore password; uses encrypted snapshot of ~/.reset-signer/keystore.json; runs official CLI setup --import-reset-keystore; produces new Solana wallet + encrypted RESET/Trac copy |
+### Synthetic tests
 
-### Test Coverage (Sandbox, Synthetic Wallets)
-- 31 checks pass on Node 24.19.0 and 26.12.0
-- Verified: source immutability, Solana keys differ per setup, overwrite rejection, encrypted output modes (0600/0700), no plaintext secrets in output, no peer/trader/MCP/network calls
-- prepare full install also succeeded in Sandbox (Node 24)
-- Limitations: Sandbox only, not user WSL; npm warnings on deprecated deps & skipped integrity for 2 Git deps; not a full security audit
+- 31 checks passed on Node 24.19.0 and 31 passed on Node 26.12.0.
+- Tests cover source-wallet immutability, encrypted output permissions, fresh synthetic Solana identities, rejection of overwrites and unsafe archives, and absence of peer/trader/MCP or network-transaction activity.
+- A complete `prepare` test also passed in Sandbox on Node 24.
+- These are synthetic Sandbox tests, not a full security audit and not a test on the owner's WSL laptop. The test report notes deprecated dependencies and two Git dependencies without integrity metadata.
 
-### Separation Boundaries
-- DEX root: ~/.local/share/intercom-dex-v0.1.5/ (separate from ~/src/resetmnr and ~/.reset-signer)
-- RESET keystore imported via encrypted snapshot — source unchanged
-- Critical: Imported RESET/Trac copy has same address, authority, funds as source — not fund isolation
-- New Solana identity is created fresh (unfunded)
+### Wallet and authority boundary
 
-### Constraints Enforced by Script
-- Rejects overlapping paths, symlinks, wrong permissions, existing data
-- No sudo, no plaintext secrets, no auto-retry on failure
-- No peer/trader/MCP started, no trading commands exposed
-- No Hermes config changes
+- `prepare` installs the pinned release and dependencies into a new dedicated directory under Linux `HOME`; it does not read wallet data.
+- `wallet-setup` is interactive and uses an encrypted snapshot of the existing RESET keystore. It creates a fresh, unfunded Solana wallet plus an encrypted RESET/Trac copy.
+- The RESET/Trac copy has the same address, authority, and funds as its source. This is not fund isolation.
+- No proof key, runtime configuration, peer, trader, MCP service, offer, or transaction has been created or started by this setup helper.
 
----
+## What has not been done
 
-## What Has NOT Been Done
+| Item | Status |
+|------|--------|
+| `prepare` on the owner's WSL | Not reported as run. The owner previously reported Node.js 26.12.0 installed in WSL; confirm `node --version` and `npm --version` in the intended shell before `prepare`. |
+| `wallet-setup` | Not run; requires a separate decision and hidden interactive passwords in the owner's terminal. |
+| Proof key | Not built. |
+| Full peer/trader runtime configuration | Not created. |
+| Peer, trader, or MCP | Not started or added to Hermes. Upstream MCP behavior requires review because it may start the trader automatically. |
+| Current worker or mining status | Intentionally omitted from this public report. Hermes was used for initial setup; do not infer ongoing worker status from this review. |
+| Live registry or market | Not currently verified. Supported pairs in code do not prove they are live or open. |
+| Offers, trading, transfers, or transactions | None performed. Any such action needs separate, transaction-specific owner approval. |
 
-| Item | Blocker / Status |
-|------|------------------|
-| prepare on user WSL | Not run (Node.js was missing; nvm v26.12.0 available) |
-| wallet-setup | Requires explicit owner approval; interactive terminal only |
-| Proof key (lockkey.zkey) | Not built (~300 MB, requires node bin/proof-setup.mjs) |
-| Runtime config (peer.json, trader.json) | Not created; needs venue keys from release |
-| Bridge/control tokens | Not generated (openssl rand -hex 32) |
-| Peer process | Not started (requires supervised runtime) |
-| Trader process | Not started |
-| MCP server (src/mcp/server.mjs) | Not configured; upstream warns it may auto-start trader |
-| Hermes MCP integration | Not added to Hermes config.yaml |
-| Live registry / market read | Cannot — requires running peer to join intercom-dex channel |
-| Active pair verification (RESET/USDC, TNK/USDC) | Unknown — code supports, live status unreadable without peer |
-| Any trading / offer / transfer | Not permitted without explicit per-transaction approval |
+## Risks and questions before later phases
 
----
+1. **Dependency installation:** `prepare` downloads the pinned release and runs `npm ci`. Do not run it with `sudo`; review any failure or partial directory before retrying.
+2. **Wallet concurrency and authority:** because the encrypted RESET/Trac copy retains the same authority as its source, confirm the intended timing before `wallet-setup`. Do not interrupt or stop an existing worker automatically.
+3. **Wallet secrecy:** passwords belong only in hidden terminal prompts. Do not place secrets, addresses, balances, wallet paths, or worker state in this public repository, issues, or commit messages.
+4. **Proof/runtime:** proof key and peer/trader configuration remain separate, unverified future tasks. Follow the tagged v0.1.5 documentation and check each generated file before starting anything.
+5. **MCP start behavior:** do not assume MCP is passive or read-only. Review the exact upstream behavior before configuring it in Hermes.
+6. **Market availability:** a live registry/order book has not been confirmed. Do not use an old snapshot as evidence of current pair status or price.
+7. **Trading:** any offer, take, cancel, withdrawal, transfer, signing, or broadcast requires specific owner approval after the pair, side, amount, price, total, fees, destination/network, and expiry are shown.
 
-## Questions / Risks for Next Review
+## Suggested staged next steps
 
-1. Node.js on WSL — nvm v26.12.0 exists; confirm prepare runs cleanly on user machine (npm lifecycle scripts may differ from Sandbox).
+1. Run `prepare` only when the owner explicitly asks; confirm Node and npm versions in the same WSL shell first.
+2. Review its output and any created files. Stop on errors, existing directories, or partial data; do not delete or retry automatically.
+3. Treat `wallet-setup` as a separate sensitive step. Run it only after the owner explicitly approves and chooses a time that does not conflict with other wallet use.
+4. Review proof-key and runtime configuration separately; do not start peer/trader/MCP by implication.
+5. Establish a genuinely read-only market observation path before claiming that a pair is currently active.
+6. Require explicit approval for each transaction, with complete terms shown beforehand.
 
-2. RESET keystore permissions — Script requires ~/.reset-signer dir 0700, keystore.json 0600. Verify before wallet-setup.
-
-3. Active RESET mining claim (round 403) — HERMES_NEXT_STEPS.md warns: Pastikan tidak ada worker lain yang aktif memakai wallet itu sebelum langkah ini dilakukan. Confirm mining worker stopped before DEX wallet-setup.
-
-4. Proof key build — ~300 MB download, takes minutes. Run separately with owner present.
-
-5. Runtime config generation — Need to create peer.json and trader.json with venue keys from release. Template in docs/OPERATORS.md / docs/NETWORKS.md.
-
-6. MCP auto-start risk — Upstream docs: src/mcp/server.mjs may start trader if not running. Do not add MCP to Hermes until behavior reviewed and approved.
-
-7. Live pair status — Cannot confirm RESET/USDC or TNK/USDC are open without peer. Plan read-only registry check after peer runs (if safe path exists).
-
-8. Payout lock — Recommended for withdrawals to owner address only. Configure in trader.json before trading.
-
-9. Backup strategy — After wallet-setup, encrypted data folder + DEX password must be backed up offline separately.
-
-10. Dependency freshness — npm warnings: deprecated packages, 2 Git deps with skipped integrity (pinned by release commit). Monitor for security advisories.
-
----
-
-## Next Steps (Awaiting Owner Decision)
-
-1. Run prepare on WSL (if Node/npm environment confirmed)
-2. Approve wallet-setup (interactive, owner types passwords)
-3. Build proof key
-4. Create runtime configs
-5. Generate tokens
-6. Start peer (supervised), then trader (supervised)
-7. Review MCP behavior before Hermes integration
-8. Read live registry → confirm active pairs
-9. Per-transaction approval for any trading
-
----
-
-No secrets, wallet addresses, balances, seeds, private keys, passwords, tokens, cookies, or personal info included in this report.
+This report intentionally excludes the owner's current worker state, round, balances, wallet addresses, local personal paths, and credentials.
