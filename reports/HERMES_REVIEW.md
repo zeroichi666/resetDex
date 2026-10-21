@@ -41,12 +41,12 @@
 
 | Item | Status |
 |------|--------|
-| `prepare` on the owner's WSL | Not reported as run. The owner previously reported Node.js 26.12.0 installed in WSL; confirm `node --version` and `npm --version` in the intended shell before `prepare`. |
+| `prepare` on WSL | Not reported as run. Before running it, check locally that Python 3.12+, Node.js 23.11+, and npm are available in the intended shell. |
 | `wallet-setup` | Not run; requires a separate decision and hidden interactive passwords in the owner's terminal. |
 | Proof key | Not built. |
 | Full peer/trader runtime configuration | Not created. |
 | Peer, trader, or MCP | Not started or added to Hermes. Upstream MCP behavior requires review because it may start the trader automatically. |
-| Current worker or mining status | Intentionally omitted from this public report. Hermes was used for initial setup; do not infer ongoing worker status from this review. |
+| Worker status | Outside the scope of this repository review; this report makes no claim about a separate local worker. |
 | Live registry or market | Not currently verified. Supported pairs in code do not prove they are live or open. |
 | Offers, trading, transfers, or transactions | None performed. Any such action needs separate, transaction-specific owner approval. |
 
