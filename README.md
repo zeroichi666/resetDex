@@ -4,6 +4,8 @@ Skrip ini disiapkan untuk Ubuntu/WSL di laptop Anda, tetapi **belum dijalankan d
 
 Lihat [penjelasan kode, sumber resmi, dan rencana Hermes](PROJECT_OVERVIEW.md) serta [laporan pengujian](TEST_REPORT.md).
 
+Untuk serah-terima instruksi aman ke Hermes, lihat [HERMES_NEXT_STEPS.md](HERMES_NEXT_STEPS.md).
+
 ## Apa yang dikerjakan
 
 `setup_intercom_dex.py` mengunci aset rilis resmi **v0.1.5**, bukan branch `main`. SHA-256 wajib cocok:
