@@ -1,35 +1,72 @@
-# Tinjauan Hermes — Intercom DEX v0.1.5
+# HERMES_REVIEW — Intercom DEX v0.1.5 (Synced)
 
-**Commit kode yang ditinjau (main):** `57859693b4ab9cb6988af89559ef213587361cf6`
-**Branch laporan dan instruksi:** `hermes/review-2026-10-21`
-**Tanggal:** 2026-10-21
+**Commit reviewed (main):** 57859693b4ab9cb6988af89559ef213587361cf6
+**Branch:** hermes/review-2026-10-21
+**Date:** 2026-10-21
+**Previous local commit:** eeea634
+**Remote HEAD:** 898d7ce
 
-## Kesimpulan
+---
 
-Langkah berikutnya hanya pemeriksaan prasyarat baca-saja dalam [instruksi Hermes](HERMES_NEXT_COMMAND.md). Dokumen itu tidak mengizinkan download, pemasangan dependency, wallet setup, atau start DEX.
+## Changes Pulled from Remote
 
-Worker merupakan proses terpisah dan berada di luar lingkup review ini. Review ini tidak memeriksa, menghentikan, memulai ulang, atau mengubah worker.
+### New File: reports/HERMES_NEXT_COMMAND.md
+Preflight read-only checks only. Does NOT authorize prepare or wallet-setup.
+Allowed checks: git status, Python/Node/npm versions, tool availability, disk space.
+Rationale: npm ci runs third-party lifecycle scripts with user account access; hash verification does not limit dependency side effects.
 
-## Temuan kode
+### Updated: reports/HERMES_REVIEW.md
+Language changed to Indonesian. Key points:
+- Next step limited to preflight read-only checks in HERMES_NEXT_COMMAND.md
+- Worker is separate process — outside review scope
+- Dependency risk noted: npm ci lifecycle scripts, deprecated deps, 2 Git deps without integrity
+- MCP may auto-start trader — do not assume passive
+- Sequence: preflight -> report -> stop. prepare requires separate review/approval.
 
-- Helper mematok Intercom DEX v0.1.5 dengan SHA-256 `63cef1771c8596e095cd7eaa52da2c74bc3670fad54f0d7b20f32b8a1b547b56`.
-- Fasenya dipisah menjadi `plan`, `prepare`, dan `wallet-setup`. `plan` hanya menampilkan rencana.
-- Kode helper `prepare` mengunduh dan memverifikasi arsip, memasang dependency release dan peer dengan `npm ci`, lalu membuat manifest, konfigurasi setup-only, dan direktori data kosong. Kode helper pada fase ini tidak membaca isi wallet/keystore dan tidak memulai peer, trader, atau MCP.
-- `wallet-setup` adalah langkah terpisah yang membuat wallet Solana baru dan salinan terenkripsi RESET/Trac. Salinan RESET/Trac mempertahankan alamat, otoritas, dan dana yang sama dengan sumber, jadi bukan isolasi dana.
-- Laporan sebelumnya mencatat tes sintetis lulus pada Node 24.19.0 dan 26.12.0. Tes itu tidak dijalankan ulang untuk revisi dokumentasi ini dan bukan bukti runtime/market/transaksi.
+---
 
-## Batas verifikasi dan risiko
+## Current Status Summary
 
-`npm ci` dapat menjalankan lifecycle scripts pihak ketiga. Helper, checksum arsip, dan pemeriksaan hash bukan sandbox: kode dependency berjalan dengan hak akun pengguna, dan efek samping di luar direktori proyek tidak dibatasi oleh pemeriksaan hash. Karena itu, instruksi sekarang berhenti pada preflight baca-saja; pemasangan dependency memerlukan peninjauan dan izin terpisah.
+| Item | Status |
+|------|--------|
+| Release pinned (v0.1.5, SHA-256 verified) | Done |
+| plan phase (display only) | Reported done |
+| prepare on WSL | NOT authorized — needs separate decision |
+| wallet-setup | NOT authorized — needs explicit approval |
+| Proof key | Not built |
+| Runtime configs | Not created |
+| Peer/trader/MCP | Not started |
+| Live registry | Unverified |
+| Trading/transactions | Not permitted |
 
-Catatan uji sebelumnya menyebut dependency usang dan dua dependency Git tanpa integrity metadata. Ini bukan audit keamanan menyeluruh atau jaminan dependency aman.
+---
 
-Belum ada runtime config, proof key, Hermes MCP, peer, trader, pemeriksaan live registry, atau transaksi yang dibuat/dijalankan oleh helper ini. Dokumentasi upstream menyebut MCP dapat memulai trader, jadi jangan anggap konfigurasi MCP sebagai akses pasif.
+## Key Risks (from remote updates)
 
-## Urutan yang diizinkan sekarang
+1. npm ci lifecycle scripts — run with user permissions, not sandboxed by release hash
+2. Wallet authority overlap — encrypted RESET/Trac copy shares authority with mining wallet
+3. MCP auto-starts trader — upstream docs warn; review before Hermes integration
+4. Dependency freshness — deprecated packages + 2 Git deps without integrity metadata
+5. Secrets handling — passwords only in hidden prompts; never in repo/issues/commits
 
-1. Jalankan hanya preflight baca-saja dalam `HERMES_NEXT_COMMAND.md`.
-2. Laporkan versi alat, status checkout secara ringkas, dan ruang disk yang tersedia kepada pemilik; jangan unggah output mentah atau path lokal ke GitHub.
-3. Berhenti. `prepare` belum diizinkan oleh instruksi ini; evaluasi risiko dependency dan minta keputusan terpisah sebelum tahap tersebut.
+---
 
-Revisi ini hanya mengubah dokumentasi. Tidak ada helper yang dijalankan, wallet dibuka, konfigurasi Hermes diubah, worker disentuh, atau proses trading dimulai.
+## Next Steps (Per Remote Instructions)
+
+1. Run preflight read-only checks (HERMES_NEXT_COMMAND.md)
+2. Report: tool versions, checkout status, disk space (summary only, no raw output/paths)
+3. STOP — do not proceed to prepare or wallet-setup
+4. prepare requires separate risk review + owner approval
+5. wallet-setup requires separate explicit owner approval + no worker conflict
+
+---
+
+## What Changed Since Last Local Commit
+
+- New preflight instruction document added
+- Review document rewritten in Indonesian with stricter stop-before-prepare stance
+- No code changes, no wallet access, no config changes, no processes started
+
+---
+
+No secrets, wallet addresses, balances, seeds, private keys, passwords, tokens, cookies, or personal info included.
