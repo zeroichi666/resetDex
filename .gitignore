@@ -1,0 +1,27 @@
+# Runtime data and encrypted/plaintext wallet material must never be committed.
+node_modules/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.zkey
+*.ptau
+**/keystore.json
+**/keyring.json
+**/trac-wallet.json
+**/solana-keypair.json
+**/trac-mnemonic.txt
+**/bridge.token
+**/control.token
+**/dashboard.token
+.reset-import-*/
+.wallet-setup.lock/
+data/
+prepared.json
+setup-complete.json
+setup-only.json
+intercom-dex-v*/
+*.tar.gz

@@ -1,0 +1,36 @@
+v26.12.0
+SYNTHETIC fixture created (no secrets printed).
+PASS: plan is non-mutating and succeeds
+PASS: RESET project overlap refused
+PASS: RESET source overlap refused
+PASS: symlink source refused
+PASS: unsafe source directory mode refused
+PASS: unsafe source file mode refused
+PASS: mode checks did not modify source bytes or metadata
+PASS: exclusive write refuses overwrite
+PASS: exclusive-write target unchanged
+PASS: prepare refuses existing directory before download
+PASS: non-TTY setup refused without writing data
+PASS: custom Solana import/config refused
+PASS: changed release source refused
+PASS: actual wrapper and upstream CLI setup succeeded
+PASS: passwords never echoed; inherited password/preload hooks ignored
+PASS: source bytes, mtime, ownership and modes unchanged after setup
+PASS: wallet files 0600 and data directory 0700
+PASS: rerun refuses existing wallets and preserves all bytes
+PASS: encrypted snapshot removed after success
+PASS: second independent synthetic setup succeeded
+SYNTHETIC verification passed: same Trac identity, fresh distinct Solana keys, encrypted outputs.
+PASS: real crypto verifies preserved Trac identity and distinct fresh Solana keys
+PASS: wrong RESET password fails with no wallet creation
+PASS: wrong-password failure leaves source unchanged and removes snapshot
+PASS: partial data detected and never deleted
+PASS: partial file preserved
+PASS: wrong archive checksum refused before extraction
+PASS: hash mismatch creates no extraction directory
+PASS: unsafe archive path entry refused
+PASS: unsafe archive link entry refused
+PASS: no peer/trader/MCP runtime files created by setup
+PASS: final RESET source unchanged
+
+RESULT: 31 checks passed. Synthetic wallets cleaned automatically. No real wallet or laptop used.

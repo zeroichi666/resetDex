@@ -1,0 +1,22 @@
+Installing pinned dependencies. No wallet is read in this phase.
+npm warn deprecated uuid@8.3.2: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+
+added 206 packages in 10s
+npm warn allow-scripts 3 packages have install scripts not yet covered by allowScripts:
+npm warn allow-scripts   bigint-buffer@1.1.5 (install: npm run rebuild || echo "Couldn't build bindings. Non-native version used.")
+npm warn allow-scripts   bufferutil@4.1.0 (install: node-gyp-build)
+npm warn allow-scripts   utf-8-validate@6.0.6 (install: node-gyp-build)
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+npm warn skipping integrity check for git dependency ssh://git@github.com/Trac-Systems/trac-peer.git
+npm warn skipping integrity check for git dependency ssh://git@github.com/Trac-Systems/main_settlement_bus.git
+npm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
+npm warn gitignore-fallback No .npmignore file found, using .gitignore for file exclusion. Consider creating a .npmignore file to explicitly control published files.
+
+added 305 packages in 9s
+npm warn allow-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn allow-scripts   protobufjs@7.6.5 (postinstall: node scripts/postinstall)
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+Prepared: /home/ubuntu/dex-synthetic-prepare-v015
+No wallets yet. No proof key, runtime configuration, peer, trader or MCP started.
