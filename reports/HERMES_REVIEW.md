@@ -1,23 +1,21 @@
-# HERMES_REVIEW — Intercom DEX v0.1.5 (Synced v2)
+# HERMES_REVIEW — Intercom DEX v0.1.5 (Synced v3)
 
 **Commit reviewed (main):** 57859693b4ab9cb6988af89559ef213587361cf6
 **Branch:** hermes/review-2026-10-21
 **Date:** 2026-10-21
-**Previous local commit:** bd95587
-**Remote HEAD:** afab984
+**Previous local commit:** 72bc126
+**Remote HEAD:** e6f1e7f
 
 ---
 
-## Changes Pulled from Remote (afab984)
+## Changes Pulled from Remote (e6f1e7f)
 
-### Updated: reports/HERMES_REVIEW.md (+8 lines)
-New section appended: Review terbaru dan langkah berikutnya
-- Confirms branch fast-forwarded to bd9558746f8f42531b777f80cfcc02ac99229a7 (commit bd95587 full SHA)
-- States commit only changed the report; no code/config changes
-- Risk summary and permission boundaries confirmed accurate
-- Next steps: preflight read-only checks per HERMES_NEXT_COMMAND.md -> report summary -> STOP
-- Explicit: prepare, wallet-setup, proof key, runtime config, peer/trader/MCP, transactions require separate review + approval
-- Worker/wallet not accessed, stopped, restarted, or modified
+### Updated: reports/HERMES_REVIEW.md (+4 lines)
+New section appended: **Review commit terbaru dan langkah berikutnya**
+- Notes commit 72bc1260a2cddcf69692825f3e43fac144b1baf7 only updated the report to record prior sync
+- No new preflight results yet
+- Next step: run read-only checks in HERMES_NEXT_COMMAND.md, report summary, then STOP
+- Explicit: do not proceed to prepare or other phases without separate review + approval
 
 ---
 
@@ -59,14 +57,9 @@ New section appended: Review terbaru dan langkah berikutnya
 
 ## What Changed Since Last Sync
 
-- Remote appended acknowledgment section to HERMES_REVIEW.md (8 lines)
-- Confirmed fast-forward to bd95587, no code changes
-- No wallet access, config changes, or processes started
+- Remote appended acknowledgment of commit 72bc126 (4 lines)
+- No code changes, no wallet access, no config changes, no processes started
 
 ---
 
 No secrets, wallet addresses, balances, seeds, private keys, passwords, tokens, cookies, or personal info included.
-
-## Review commit terbaru dan langkah berikutnya
-
-Commit `72bc1260a2cddcf69692825f3e43fac144b1baf7` hanya mengubah laporan ini untuk mencatat sinkronisasi sebelumnya; belum ada hasil preflight baru. Langkah berikutnya adalah menjalankan hanya pemeriksaan baca-saja di [`HERMES_NEXT_COMMAND.md`](HERMES_NEXT_COMMAND.md), melaporkan ringkasan versi alat, status checkout, dan ruang disk kepada pemilik, lalu berhenti. Jangan lanjut ke `prepare` atau fase lain tanpa tinjauan dan izin terpisah.
