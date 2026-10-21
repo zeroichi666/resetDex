@@ -63,3 +63,7 @@ New section appended: **Review commit terbaru dan langkah berikutnya**
 ---
 
 No secrets, wallet addresses, balances, seeds, private keys, passwords, tokens, cookies, or personal info included.
+
+## Review sinkronisasi terbaru dan instruksi berikutnya
+
+Commit `9743700d1c797611cde590452b57787bf178e56f` hanya memperbarui catatan sinkronisasi laporan ini; tidak menyertakan hasil pemeriksaan preflight. Instruksi berikutnya tetap menjalankan pemeriksaan baca-saja dalam [`HERMES_NEXT_COMMAND.md`](HERMES_NEXT_COMMAND.md), melaporkan ringkasan versi alat, status checkout, dan ruang disk kepada pemilik, lalu berhenti. Jangan lanjut ke `prepare` atau fase lain. Tidak perlu memeriksa atau mengubah worker maupun wallet.
